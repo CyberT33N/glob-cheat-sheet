@@ -41,6 +41,6 @@ const routesPaths = await this._getFilePaths('**/*.routes.js')
 
 #### Exclude node_modules folder
 ```javascript
-{,!(node_modules)/**/}*.routes.js
+const routesPaths = await this._getFilePaths('{,!(node_modules)/**/}*.routes.js')
 ```
 
