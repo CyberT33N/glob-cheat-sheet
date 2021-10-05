@@ -52,6 +52,6 @@ const getRouters = expression => {
 
 #### Exclude node_modules folder
 ```javascript
-const routesPaths = await this._getFilePaths('{,!(node_modules)/**/}*.routes.js')
+const routesPaths = await getRouters('{,!(node_modules)/**/}*.routes.js')
 ```
 
