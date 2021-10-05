@@ -10,31 +10,42 @@ Glob Cheat Sheet with the most needed stuff..
 - https://www.npmjs.com/package/glob
 ```javascript
 /**
- * Get all file paths for specific glob expression
- * @param expression {string} - Glob expression
+ * Get all routers
+ * @param {string} expression - Glob expression
  * @returns {array} - All absolute file paths
- * @private
  */
-_getFilePaths(expression) {
+const getRouters = expression => {
     return new Promise((resolve, reject) => {
-        glob(expression, (e, filePaths) => {
-            if(e){
-                reject(e)
+        glob(expression, (e, routerPaths) => {
+            if (e) {
+                reject(new Error(e))
             }
 
-            const finalFilePaths = []
+            const routers = []
 
-            for (const filePath of filePaths) {
-                const finalFilePath = path.join('../../../', filePath)
-                finalFilePaths.push(finalFilePath)
+            for (const path of routerPaths) {
+                const finalPath = `${process.env.PWD}/${path}`
+                const router = require(finalPath)
+                routers.push(router)
             }
 
-            resolve(finalFilePaths)
+            resolve(routers)
         })
     })
 }
 
-const routesPaths = await this._getFilePaths('**/*.routes.js')
+(async() => {
+    const routers = await getRouters('src/**/routes.js')
+
+    // load all routes
+    for (const router of routers){
+        app.use(router)
+    }
+
+    await app.listen(port)
+})()
+
+
 ```
 
 <br><br>
